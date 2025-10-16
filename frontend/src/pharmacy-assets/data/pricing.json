@@ -1,0 +1,39 @@
+[
+  {
+    "name": "Basic Package",
+    "subtitle": "Vital Tools for Streamlined Healthcare Management",
+    "price": "PKR 50k",
+    "features": [
+      "Essential Healthcare management",
+      "Simplicity and affordability",
+      "Comprehensive Healthcare Management",
+      "Cost-Effective Solution"
+    ],
+    "button": "Choose Your Plan"
+  },
+  {
+    "name": "Pro Package",
+    "subtitle": "Cutting-Edge Tools for Effortless Healthcare Management",
+    "price": "PKR 150k",
+    "features": [
+      "Comprehensive Healthcare Management",
+      "Enhanced efficiency",
+      "Cost-effective solutions",
+      "Scalability and Customization"
+    ],
+    "button": "Choose Your Plan",
+    "recommended": true
+  },
+  {
+    "name": "Advance Package",
+    "subtitle": "Vital Tools for Streamlined Healthcare Management",
+    "price": "PKR 350k",
+    "features": [
+      "Essential Healthcare management",
+      "Simplicity and affordability",
+      "Comprehensive Healthcare Management",
+      "Cost-Effective Solution"
+    ],
+    "button": "Choose Your Plan"
+  }
+]

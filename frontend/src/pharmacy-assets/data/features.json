@@ -1,0 +1,14 @@
+[
+  { "title": "Inventory Management", "description": "Track 50K+ medicines, expiry alerts, stock value.", "icon": "💊" },
+  { "title": "Prescription Management", "description": "Digital prescriptions for customers.", "icon": "📝" },
+  { "title": "POS (Point of Sale)", "description": "Fast billing, cash/credit sales, receipts.", "icon": "🧾" },
+  { "title": "Tax Modules", "description": "Auto GST/VAT reports.", "icon": "🧮" },
+  { "title": "Staff Attendance", "description": "Payroll & attendance tracking.", "icon": "🗓️" },
+  { "title": "Analytics & Reports", "description": "View through visual charts & graphs.", "icon": "📈" },
+  { "title": "Settings", "description": "Customize software preferences.", "icon": "⚙️" },
+  { "title": "User Management", "description": "Roles like Admin, Cashier, Manager.", "icon": "👥" },
+  { "title": "Expense Management", "description": "Rent, utilities, inventory costs.", "icon": "💳" },
+  { "title": "Audit Logs", "description": "Track all user actions for security.", "icon": "🔒" },
+  { "title": "Supplier Management", "description": "Control suppliers, purchases & companies.", "icon": "🏷️" },
+  { "title": "Customer Management", "description": "Manage cash & credit customers.", "icon": "🧑‍💼" }
+]

@@ -1,0 +1,41 @@
+# Node.js
+node_modules/
+.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts
+build/
+dist/
+public/build/
+public/dist/
+
+# React-specific
+.cache/
+coverage/
+
+# MongoDB
+data/db/
+dump/
+
+# Editor/IDE specific
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+*.orig
+*.pyc
+*.log
+.DS_Store
+Thumbs.db
+
+# Environment variables (if not using .env)
+# config/
+# credentials/
+
+# Other ignored files
+*.zip
+*.rar
+*.7z
