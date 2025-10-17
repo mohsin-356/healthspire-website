@@ -5,7 +5,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { motion } from 'motion/react';
-import { Plus, Trash2, Edit3, Save, X, LayoutGrid, Settings, Hospital, ListChecks, Info, Heart, Users, MessageSquareQuote, PanelLeftClose, PanelLeftOpen, GripVertical, Building2, FileText, Image as ImageIcon } from 'lucide-react';
+import { Plus, Trash2, Edit3, Save, X, LayoutGrid, Settings, Hospital, ListChecks, Info, Heart, Users, MessageSquareQuote, PanelLeftClose, PanelLeftOpen, GripVertical, Building2, FileText, Image as ImageIcon, UserCircle, LogOut, Upload } from 'lucide-react';
 
 const ICON_OPTIONS: IconName[] = [
   'Hospital','Pill','FlaskConical','Shield','BarChart3','UserCheck',
@@ -13,7 +13,7 @@ const ICON_OPTIONS: IconName[] = [
   'Users','Globe','Award','Target','TrendingUpIcon','Heart'
 ];
 
-type TabKey = 'dashboard' | 'solutions' | 'features' | 'about' | 'values' | 'team' | 'clients' | 'blogs' | 'testimonials' | 'settings';
+type TabKey = 'dashboard' | 'solutions' | 'features' | 'about' | 'values' | 'team' | 'clients' | 'blogs' | 'testimonials' | 'profile' | 'settings';
 
 export function AdminDashboard() {
   const [tab, setTab] = useState<TabKey>('dashboard');
@@ -53,6 +53,7 @@ export function AdminDashboard() {
           <SidebarItem collapsed={collapsed} active={tab==='clients'} onClick={()=>setTab('clients')} label="Our Clients" icon={<Building2 className="w-4 h-4"/>} />
           <SidebarItem collapsed={collapsed} active={tab==='blogs'} onClick={()=>setTab('blogs')} label="Blog" icon={<FileText className="w-4 h-4"/>} />
           <SidebarItem collapsed={collapsed} active={tab==='testimonials'} onClick={()=>setTab('testimonials')} label="Testimonials" icon={<MessageSquareQuote className="w-4 h-4"/>} />
+          <SidebarItem collapsed={collapsed} active={tab==='profile'} onClick={()=>setTab('profile')} label="Profile" icon={<UserCircle className="w-4 h-4"/>} />
           <SidebarItem collapsed={collapsed} active={tab==='settings'} onClick={()=>setTab('settings')} label="Settings" icon={<Settings className="w-4 h-4"/>} />
           {/* Toggle item after Settings */}
           <SidebarItem collapsed={collapsed} active={false} onClick={()=>setOpen(false)} label="Hide Sidebar" icon={<PanelLeftClose className="w-4 h-4"/>} />
@@ -75,6 +76,7 @@ export function AdminDashboard() {
         {tab==='clients' && <ClientsManager/>}
         {tab==='blogs' && <BlogManager/>}
         {tab==='testimonials' && <TestimonialsManager/>}
+        {tab==='profile' && <ProfilePanel/>}
         {tab==='settings' && <SettingsPanel/>}
       </main>
     </div>
@@ -84,7 +86,7 @@ export function AdminDashboard() {
 function ClientsManager(){
   const { role } = useAuth();
   const isAdmin = role === 'admin';
-  const { data, addClient, updateClient, deleteClient } = useContentStore();
+  const { data, addClient, updateClient, deleteClient, uploadImage } = useContentStore();
   const [draft, setDraft] = useState({ name:'', img:'' });
 
   return (
@@ -115,9 +117,10 @@ function ClientsManager(){
 
       <div className="p-4 rounded-xl border border-border bg-card">
         <div className="font-medium mb-3">Add Client</div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
           <Input value={draft.name} onChange={(e)=>setDraft({...draft, name:e.target.value})} placeholder="Client Name"/>
-          <Input value={draft.img} onChange={(e)=>setDraft({...draft, img:e.target.value})} placeholder="Logo URL or path"/>
+          <Input value={draft.img} onChange={(e)=>setDraft({...draft, img:e.target.value})} placeholder="Logo URL"/>
+          <Input type="file" accept="image/*" onChange={async (e)=>{ const f=e.target.files?.[0]; if(f){ try{ const url=await uploadImage(f); setDraft(d=>({...d, img:url})); }catch(err){ console.error(err);} e.currentTarget.value=''; } }} />
           <Button onClick={()=>{ if(!isAdmin) return; if(!draft.name || !draft.img) return; addClient({ name: draft.name, img: draft.img }); setDraft({ name:'', img:'' }); }}><Plus className="w-4 h-4 mr-2"/>Add</Button>
         </div>
       </div>
@@ -128,12 +131,14 @@ function ClientsManager(){
 function InlineClientEditor({c, onSave, disabled}:{c:{name:string; img:string}; onSave:(p:Partial<typeof c>)=>void; disabled?:boolean}){
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState({...c});
+  const { uploadImage } = useContentStore();
   if(!open) return <Button size="icon" variant="outline" disabled={disabled} onClick={()=>{ setOpen(true); setDraft({...c}); }}><Edit3 className="w-4 h-4"/></Button>;
   return (
     <div className="w-full">
       <div className="grid grid-cols-1 gap-2">
         <Input className="w-full" value={draft.name} onChange={(e)=>setDraft({...draft, name:e.target.value})} placeholder="Client Name"/>
-        <Input className="w-full" value={draft.img} onChange={(e)=>setDraft({...draft, img:e.target.value})} placeholder="Logo URL or path"/>
+        <Input className="w-full" value={draft.img} onChange={(e)=>setDraft({...draft, img:e.target.value})} placeholder="Logo URL"/>
+        <Input type="file" accept="image/*" onChange={async (e)=>{ const f=e.target.files?.[0]; if(f){ try{ const url=await uploadImage(f); setDraft(d=>({...d, img:url})); }catch(err){ console.error(err);} e.currentTarget.value=''; } }} />
         <div className="flex flex-col gap-2 mt-1">
           <Button disabled={disabled} onClick={()=>{ onSave(draft); setOpen(false); }} className="bg-primary text-primary-foreground w-full"><Save className="w-4 h-4 mr-2"/>Save</Button>
           <Button variant="outline" onClick={()=>setOpen(false)} className="w-full"><X className="w-4 h-4 mr-2"/>Cancel</Button>
@@ -146,7 +151,7 @@ function InlineClientEditor({c, onSave, disabled}:{c:{name:string; img:string}; 
 function BlogManager(){
   const { role } = useAuth();
   const isAdmin = role === 'admin';
-  const { data, addBlog, updateBlog, deleteBlog } = useContentStore();
+  const { data, addBlog, updateBlog, deleteBlog, uploadImage } = useContentStore();
   const [adding, setAdding] = useState(false);
   const [draft, setDraft] = useState({
     title: '', slug: '', author: '',
@@ -158,7 +163,7 @@ function BlogManager(){
   const [editDraft, setEditDraft] = useState<any>(null);
 
   const toSlug = (s:string)=> s.toLowerCase().trim().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-');
-  function handleFileToDataUrl(file: File, cb: (url:string)=>void){ const r=new FileReader(); r.onload=()=>cb(String(r.result||'')); r.readAsDataURL(file); }
+  async function handleFileToUpload(file: File, cb: (url:string)=>void){ try{ const url = await uploadImage(file); cb(url); }catch(e){ console.error(e); } }
 
   return (
     <div>
@@ -200,7 +205,7 @@ function BlogManager(){
                       {editDraft.coverImg ? <img src={editDraft.coverImg} alt="cover" className="w-full h-full object-cover"/> : <ImageIcon className="w-5 h-5 text-muted-foreground"/>}
                     </div>
                     <div className="flex items-center gap-2 flex-wrap">
-                      <Input type="file" accept="image/*" onChange={(e)=>{ const f=e.target.files?.[0]; if(f) handleFileToDataUrl(f, (url)=> setEditDraft((d:any)=>({...d, coverImg:url})) ); }} />
+                      <Input type="file" accept="image/*" onChange={(e)=>{ const f=e.target.files?.[0]; if(f) handleFileToUpload(f, (url)=> setEditDraft((d:any)=>({...d, coverImg:url})) ); if(e.currentTarget) e.currentTarget.value=''; }} />
                       <Button variant="outline" onClick={()=>setEditDraft((d:any)=>({...d, coverImg:''}))}>Remove Image</Button>
                     </div>
                   </div>
@@ -248,7 +253,7 @@ function BlogManager(){
                 {draft.coverImg ? <img src={draft.coverImg} alt="cover" className="w-full h-full object-cover"/> : <ImageIcon className="w-5 h-5 text-muted-foreground"/>}
               </div>
               <div className="flex items-center gap-2 flex-wrap">
-                <Input type="file" accept="image/*" onChange={(e)=>{ const f=e.target.files?.[0]; if(f) handleFileToDataUrl(f, (url)=> setDraft(d=>({...d, coverImg:url})) ); }} />
+                <Input type="file" accept="image/*" onChange={(e)=>{ const f=e.target.files?.[0]; if(f) handleFileToUpload(f, (url)=> setDraft(d=>({...d, coverImg:url})) ); if(e.currentTarget) e.currentTarget.value=''; }} />
                 <Button variant="outline" onClick={()=>setDraft(d=>({...d, coverImg:''}))}>Remove Image</Button>
               </div>
             </div>
@@ -882,7 +887,7 @@ function InlineValueEditor({v, onSave}:{v:{icon:IconName; title:string; descript
 }
 
 function TeamManager(){
-  const { data, addTeamMember, updateTeamMember, deleteTeamMember } = useContentStore();
+  const { data, addTeamMember, updateTeamMember, deleteTeamMember, uploadImage } = useContentStore();
   const [draft, setDraft] = useState({ name:'', role:'', img:'' });
 
   return (
@@ -908,10 +913,11 @@ function TeamManager(){
 
       <div className="p-4 rounded-xl border border-border bg-card">
         <div className="font-medium mb-3">Add Team Member</div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
           <Input value={draft.name} onChange={(e)=>setDraft({...draft, name:e.target.value})} placeholder="Full Name"/>
           <Input value={draft.role} onChange={(e)=>setDraft({...draft, role:e.target.value})} placeholder="Role"/>
           <Input value={draft.img} onChange={(e)=>setDraft({...draft, img:e.target.value})} placeholder="Image URL"/>
+          <Input type="file" accept="image/*" onChange={async (e)=>{ const f=e.target.files?.[0]; if(f){ try{ const url=await uploadImage(f); setDraft(d=>({...d, img:url})); }catch(err){ console.error(err);} e.currentTarget.value=''; } }} />
         </div>
         <div className="mt-3"><Button onClick={()=>{ if(!draft.name) return; addTeamMember(draft); setDraft({ name:'', role:'', img:'' }); }}><Plus className="w-4 h-4 mr-2"/>Add</Button></div>
       </div>
@@ -922,6 +928,7 @@ function TeamManager(){
 function InlineTeamEditor({m, onSave}:{m:{name:string; role:string; img:string}; onSave:(p:Partial<typeof m>)=>void}){
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState({...m});
+  const { uploadImage } = useContentStore();
   if(!open) return <Button size="icon" variant="outline" onClick={()=>{ setOpen(true); setDraft({...m}); }}><Edit3 className="w-4 h-4"/></Button>;
   return (
     <div className="w-full">
@@ -929,6 +936,7 @@ function InlineTeamEditor({m, onSave}:{m:{name:string; role:string; img:string};
         <Input className="md:col-span-2" value={draft.name} onChange={(e)=>setDraft({...draft, name:e.target.value})} placeholder="Name"/>
         <Input className="md:col-span-2" value={draft.role} onChange={(e)=>setDraft({...draft, role:e.target.value})} placeholder="Role"/>
         <Input className="md:col-span-2" value={draft.img} onChange={(e)=>setDraft({...draft, img:e.target.value})} placeholder="Image URL"/>
+        <Input className="md:col-span-2" type="file" accept="image/*" onChange={async (e)=>{ const f=e.target.files?.[0]; if(f){ try{ const url=await uploadImage(f); setDraft(d=>({...d, img:url})); }catch(err){ console.error(err);} (e.currentTarget as HTMLInputElement).value=''; } }} />
         <div className="md:col-span-6 flex justify-end gap-2 mt-1">
           <Button onClick={()=>{ onSave(draft); setOpen(false); }} className="bg-primary text-primary-foreground"><Save className="w-4 h-4 mr-2"/>Save</Button>
           <Button variant="outline" onClick={()=>setOpen(false)}><X className="w-4 h-4 mr-2"/>Cancel</Button>
@@ -996,6 +1004,56 @@ function InlineTestimonialEditor({t, onSave}:{t:{name:string; title:string; orga
         <div className="md:col-span-6 flex justify-end gap-2">
           <Button onClick={()=>{ onSave(draft); setOpen(false); }} className="bg-primary text-primary-foreground"><Save className="w-4 h-4 mr-2"/>Save</Button>
           <Button variant="outline" onClick={()=>setOpen(false)}><X className="w-4 h-4 mr-2"/>Cancel</Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProfilePanel(){
+  const { user, role, logout, updateProfile } = useAuth();
+  const { uploadImage } = useContentStore();
+  const [busy, setBusy] = useState(false);
+  const fileRef = React.useRef<HTMLInputElement>(null);
+
+  async function onPickFile(e: React.ChangeEvent<HTMLInputElement>){
+    const f = e.target.files?.[0];
+    if(!f) return;
+    setBusy(true);
+    try{
+      const url = await uploadImage(f);
+      await updateProfile({ avatar: url });
+    }finally{
+      setBusy(false);
+      e.currentTarget.value='';
+    }
+  }
+
+  const initials = (user?.email||'U').slice(0,2).toUpperCase();
+
+  return (
+    <div>
+      <SectionHeader title="Profile" subtitle="Manage your admin profile"/>
+      <div className="p-4 rounded-xl border border-border bg-card max-w-2xl">
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            {user?.avatar ? (
+              <img src={user.avatar} alt="avatar" className="w-16 h-16 rounded-full object-cover border border-border"/>
+            ) : (
+              <div className="w-16 h-16 rounded-full border border-border bg-primary/10 text-primary flex items-center justify-center font-semibold">{initials}</div>
+            )}
+          </div>
+          <div className="flex-1">
+            <div className="font-medium">{user?.email || '—'}</div>
+            <div className="text-xs text-muted-foreground">Role: {role}</div>
+          </div>
+          <div className="flex items-center gap-2">
+            <input ref={fileRef} type="file" accept="image/*" onChange={onPickFile} disabled={busy} className="hidden"/>
+            <Button type="button" variant="outline" onClick={()=>fileRef.current?.click()} disabled={busy}>
+              <Upload className="w-4 h-4 mr-2"/>Upload
+            </Button>
+            <Button type="button" variant="destructive" className="bg-destructive text-destructive-foreground" onClick={logout}><LogOut className="w-4 h-4 mr-2"/>Logout</Button>
+          </div>
         </div>
       </div>
     </div>

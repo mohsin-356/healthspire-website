@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
+import fs from 'fs';
+import path from 'path';
 import authRoutes from './routes/auth.routes.js';
 import specificationRoutes from './routes/specification.routes.js';
 import featureRoutes from './routes/feature.routes.js';
@@ -12,6 +14,7 @@ import testimonialRoutes from './routes/testimonial.routes.js';
 import clientRoutes from './routes/client.routes.js';
 import blogRoutes from './routes/blog.routes.js';
 import settingsRoutes from './routes/settings.routes.js';
+import uploadRoutes from './routes/upload.routes.js';
 
 const app = express();
 
@@ -31,6 +34,11 @@ app.get('/api/health', (req, res) => {
   res.json({ ok: true, ts: Date.now() });
 });
 
+// Ensure uploads dir exists and serve static files
+const uploadsDir = path.resolve(process.cwd(), 'uploads');
+try { fs.mkdirSync(uploadsDir, { recursive: true }); } catch {}
+app.use('/uploads', express.static(uploadsDir));
+
 app.use('/api/auth', authRoutes);
 app.use('/api/specifications', specificationRoutes);
 app.use('/api/features', featureRoutes);
@@ -42,6 +50,7 @@ app.use('/api/testimonials', testimonialRoutes);
 app.use('/api/clients', clientRoutes);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/settings', settingsRoutes);
+app.use('/api/uploads', uploadRoutes);
 
 // Not found handler
 app.use((req, res, next) => {

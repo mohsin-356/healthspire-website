@@ -5,9 +5,11 @@ export type Role = 'guest' | 'demo' | 'admin';
 interface AuthContextType {
   role: Role;
   token: string | null;
+  user: { id: string; email: string; role: Role; avatar?: string } | null;
   login: (email: string, password: string) => Promise<boolean>;
   loginDemo: () => void;
   logout: () => void;
+  updateProfile: (patch: { avatar?: string }) => Promise<boolean>;
 }
 
 const AUTH_KEY = 'healthspire_auth_v1';
@@ -21,6 +23,7 @@ export function AuthProvider({ children }: { children?: React.ReactNode }) {
   const [token, setToken] = useState<string | null>(() => {
     try { return localStorage.getItem(TOKEN_KEY); } catch { return null; }
   });
+  const [user, setUser] = useState<{ id: string; email: string; role: Role; avatar?: string } | null>(null);
 
   // Persist role for demo mode compatibility (non-authoritative)
   useEffect(() => { try { localStorage.setItem(AUTH_KEY, role); } catch {} }, [role]);
@@ -34,9 +37,9 @@ export function AuthProvider({ children }: { children?: React.ReactNode }) {
         const res = await fetch(`${API_BASE}/auth/me`, { headers: { Authorization: `Bearer ${token}` } });
         if (!res.ok) throw new Error('me failed');
         const me = await res.json();
-        if (alive) setRole((me.role as Role) || 'guest');
+        if (alive) { setRole((me.role as Role) || 'guest'); setUser({ id: me.id, email: me.email, role: me.role as Role, avatar: me.avatar }); }
       } catch {
-        if (alive) { setRole('guest'); setToken(null); try { localStorage.removeItem(TOKEN_KEY); } catch {} }
+        if (alive) { setRole('guest'); setToken(null); setUser(null); try { localStorage.removeItem(TOKEN_KEY); } catch {} }
       }
     }
     restore();
@@ -46,6 +49,7 @@ export function AuthProvider({ children }: { children?: React.ReactNode }) {
   const api = useMemo<AuthContextType>(() => ({
     role,
     token,
+    user,
     login: async (email, password) => {
       try {
         const res = await fetch(`${API_BASE}/auth/login`, {
@@ -59,15 +63,30 @@ export function AuthProvider({ children }: { children?: React.ReactNode }) {
         const r = (data.user?.role as Role) || 'guest';
         setToken(tok);
         setRole(r);
+        setUser({ id: data.user?.id, email: data.user?.email, role: r, avatar: data.user?.avatar });
         try { localStorage.setItem(TOKEN_KEY, tok); } catch {}
         return true;
       } catch {
         return false;
       }
     },
-    loginDemo: () => { setRole('demo'); setToken(null); try { localStorage.removeItem(TOKEN_KEY); } catch {} },
-    logout: () => { setRole('guest'); setToken(null); try { localStorage.removeItem(TOKEN_KEY); } catch {} },
-  }), [role, token]);
+    loginDemo: () => { setRole('demo'); setToken(null); setUser(null); try { localStorage.removeItem(TOKEN_KEY); } catch {} },
+    logout: () => { setRole('guest'); setToken(null); setUser(null); try { localStorage.removeItem(TOKEN_KEY); } catch {} },
+    updateProfile: async (patch) => {
+      if (!token) return false;
+      try {
+        const res = await fetch(`${API_BASE}/auth/me`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify(patch)
+        });
+        if (!res.ok) return false;
+        const me = await res.json();
+        setUser({ id: me.id, email: me.email, role: me.role as Role, avatar: me.avatar });
+        return true;
+      } catch { return false; }
+    },
+  }), [role, token, user]);
 
   return React.createElement(AuthContext.Provider, { value: api }, children);
 }

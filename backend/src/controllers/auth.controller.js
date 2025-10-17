@@ -24,11 +24,20 @@ export const login = asyncHandler(async (req, res) => {
   const ok = await bcrypt.compare(password, user.passwordHash);
   if (!ok) return res.status(401).json({ error: 'Invalid credentials' });
   const token = sign(user);
-  res.json({ token, user: { id: user._id, email: user.email, role: user.role } });
+  res.json({ token, user: { id: user._id, email: user.email, role: user.role, avatar: user.avatar || '' } });
 });
 
 export const me = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id).select('_id email role');
+  const user = await User.findById(req.user.id).select('_id email role avatar');
   if (!user) return res.status(404).json({ error: 'User not found' });
-  res.json({ id: user._id, email: user.email, role: user.role });
+  res.json({ id: user._id, email: user.email, role: user.role, avatar: user.avatar || '' });
+});
+
+export const updateMe = asyncHandler(async (req, res) => {
+  const { avatar } = req.body || {};
+  const user = await User.findById(req.user.id);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  if (typeof avatar === 'string') user.avatar = avatar;
+  await user.save();
+  res.json({ id: user._id, email: user.email, role: user.role, avatar: user.avatar || '' });
 });

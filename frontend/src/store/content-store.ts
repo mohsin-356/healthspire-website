@@ -95,6 +95,7 @@ interface ContentContextType {
   data: ContentState;
   setData: React.Dispatch<React.SetStateAction<ContentState>>;
   reset: () => void;
+  uploadImage: (file: File) => Promise<string>;
   // CRUD helpers per collection
   addSpecification: (item: Omit<Specification, 'id'>) => void;
   updateSpecification: (id: string, patch: Partial<Specification>) => void;
@@ -217,6 +218,15 @@ export function ContentStoreProvider({ children }: { children?: React.ReactNode 
           });
         })().catch(console.error);
       }).catch(console.error);
+    },
+    uploadImage: async (file: File) => {
+      const fd = new FormData();
+      fd.append('file', file);
+      const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+      const res = await fetch(`${API_BASE}/uploads`, { method: 'POST', headers, body: fd, cache: 'no-store' });
+      if (!res.ok) throw new Error('Upload failed');
+      const data = await res.json();
+      return data.url as string;
     },
 
     addSpecification: (item) => { if (!canEdit) return; apiFetch<any>('/specifications', { method: 'POST', body: JSON.stringify(item) }, token).then(doc => setData(s => ({ ...s, specifications: [...s.specifications, mapId(doc)] }))).catch(console.error); },
