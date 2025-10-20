@@ -9,7 +9,7 @@ import {
   Users, Globe, Award, Target, TrendingUp as TrendingUpIcon, Heart,
 } from 'lucide-react';
 
-const API_BASE = (import.meta as any).env?.VITE_API_URL || 'https://healthspire-backend-git-main-mindspires-projects.vercel.app/api';
+const API_BASE = (import.meta as any).env?.VITE_API_URL || 'https://healthspire-backend.vercel.app/api';
 
 export type IconName =
   | 'Hospital' | 'Pill' | 'FlaskConical' | 'Shield' | 'BarChart3' | 'UserCheck'
