@@ -18,19 +18,28 @@ import uploadRoutes from './routes/upload.routes.js';
 
 const app = express();
 
-const allowedOrigins = [
+const defaultAllowed = [
   'https://healthspire.org',
-  'http://localhost:5173'
+  'http://localhost:5173',
+  'http://127.0.0.1:5173'
 ];
+const envAllowed = (process.env.CORS_ORIGIN || '')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
+const explicitAllowed = new Set([...defaultAllowed, ...envAllowed]);
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) return callback(null, true);
+    try {
+      if (explicitAllowed.has(origin)) return callback(null, true);
+      const u = new URL(origin);
+      if (u.hostname === 'localhost' || u.hostname === '127.0.0.1') return callback(null, true);
+    } catch {}
     return callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
   optionsSuccessStatus: 204
 };
 app.use(cors(corsOptions));
