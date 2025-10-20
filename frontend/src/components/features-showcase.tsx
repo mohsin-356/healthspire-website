@@ -94,7 +94,7 @@ export function FeaturesShowcase() {
           viewport={{ once: true }}
         >
           <p className="text-muted-foreground mb-6">
-            Ready to transform your healthcare facility with MINDSPIRE's powerful healthcare technology?
+            Ready to transform your healthcare facility with HEALTHSPIRE's powerful healthcare technology?
           </p>
         </motion.div>
       </div>

@@ -36,13 +36,13 @@ export function AboutMindspireSection() {
                   <span className="text-2xl font-bold text-primary-foreground">M</span>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-semibold">MINDSPIRE</h3>
+                  <h3 className="text-2xl font-semibold">HEALTHSPIRE</h3>
                   <p className="text-muted-foreground">Healthcare Technology Leaders</p>
                 </div>
               </div>
               
               <p className="text-muted-foreground mb-6 leading-relaxed">
-                Founded with a mission to revolutionize healthcare through technology, MINDSPIRE has been 
+                Founded with a mission to revolutionize healthcare through technology, HEALTHSPIRE has been 
                 at the forefront of healthcare innovation for over 15 years. Our comprehensive suite of 
                 solutions serves healthcare providers worldwide, improving patient outcomes and operational efficiency.
               </p>
@@ -187,8 +187,8 @@ export function AboutMindspireSection() {
           <div className="relative z-10">
             <h3 className="text-3xl font-semibold mb-4">Innovation Never Stops</h3>
             <p className="text-lg opacity-90 mb-8 max-w-3xl mx-auto">
-              At MINDSPIRE, we're constantly pushing the boundaries of what's possible in healthcare technology. 
-              SPIREHEALTH represents the latest in our commitment to delivering world-class healthcare solutions.
+              At HEALTHSPIRE, we're constantly pushing the boundaries of what's possible in healthcare technology. 
+              HEALTHSPIRE represents the latest in our commitment to delivering world-class healthcare solutions.
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

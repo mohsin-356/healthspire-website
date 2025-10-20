@@ -47,7 +47,7 @@ export function DemoCTASection() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            See SPIREHEALTH in Action
+            See HEALTHSPIRE in Action
           </motion.h2>
           <motion.p
             className="text-xl opacity-90 max-w-3xl mx-auto"
@@ -56,7 +56,7 @@ export function DemoCTASection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            Join over 500+ healthcare facilities that have transformed their operations with MINDSPIRE's SPIREHEALTH platform. 
+            Join over 500+ healthcare facilities that have transformed their operations with HEALTHSPIRE's HEALTHSPIRE platform. 
             Schedule a personalized demo and see how our advanced healthcare technology can revolutionize your workflow.
           </motion.p>
         </motion.div>
@@ -182,7 +182,7 @@ export function DemoCTASection() {
             viewport={{ once: true }}
           >
             Our demo showcases real healthcare scenarios with actual data workflows. 
-            See exactly how MINDSPIRE's SPIREHEALTH will transform your facility's operations.
+            See exactly how HEALTHSPIRE's  will transform your facility's operations.
           </motion.p>
         </motion.div>
       </div>

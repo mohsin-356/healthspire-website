@@ -126,7 +126,7 @@ export function SchedulingShowcase() {
           >
             <div className="bg-white rounded-3xl shadow-xl border border-blue-100 overflow-hidden">
               <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-8 text-white">
-                <h3 className="text-2xl font-semibold mb-2">Get Started with SPIREHEALTH</h3>
+                <h3 className="text-2xl font-semibold mb-2">Get Started with HEALTHSPIRE</h3>
                 <p className="opacity-90">Tell us about your organization to receive a personalized demo</p>
               </div>
               
@@ -598,7 +598,7 @@ export function SchedulingShowcase() {
           viewport={{ once: true }}
         >
           <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-            Experience the power of intelligent scheduling. See how MINDSPIRE's SPIREHEALTH platform can transform your appointment management and improve patient satisfaction.
+            Experience the power of intelligent scheduling. See how HEALTHSPIRE platform can transform your appointment management and improve patient satisfaction.
           </p>
           <motion.button
             className="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all"
