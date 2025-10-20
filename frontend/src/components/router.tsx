@@ -19,6 +19,7 @@ import { TestimonialsSection } from './testimonials-section';
 import { ContactSection } from './contact-section';
 import { BlogPage } from './blog-page';
 import { BlogDetailPage } from './blog-detail-page';
+import { BookingPage } from './booking-page';
 
 function HomePage() {
   return (
@@ -74,6 +75,8 @@ export function Router() {
       return (role === 'admin' || role === 'demo') ? <AdminDashboard /> : <LoginPage />;
     case '/blog':
       return <BlogPage />;
+    case '/book':
+      return <BookingPage />;
     case '/hospital':
       return <HospitalPage />;
     case '/pharmacy':

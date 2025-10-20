@@ -21,7 +21,7 @@ export const defaultFeatures = [
 export const defaultAbout = {
   heading: 'Powered by MINDSPIRE',
   subheading:
-    'SPIREHEALTH is developed by MINDSPIRE, a global leader in healthcare technology innovation, dedicated to transforming healthcare delivery through cutting-edge software solutions.',
+    'HEALTHSPIRE is developed by MINDSPIRE, a global leader in healthcare technology innovation, dedicated to transforming healthcare delivery through cutting-edge software solutions.',
   ctaText: 'Visit MINDSPIRE.ORG',
   ctaUrl: 'https://mindspire.org',
 };
@@ -48,7 +48,7 @@ export const defaultTeam = [
 ];
 
 export const defaultTestimonials = [
-  { name: 'Dr. Zahid Rizwan', title: 'Chief Medical Officer', organization: 'Metro General Hospital', content: 'SPIREHEALTH has revolutionized our patient care workflow. The integrated EMR system has reduced documentation time by 40% and improved our care quality metrics significantly.', rating: 5, avatar: 'SC' },
+  { name: 'Dr. Zahid Rizwan', title: 'Chief Medical Officer', organization: 'Metro General Hospital', content: 'HEALTHSPIRE has revolutionized our patient care workflow. The integrated EMR system has reduced documentation time by 40% and improved our care quality metrics significantly.', rating: 5, avatar: 'SC' },
   { name: 'Dr. Tariq Anwar', title: 'Pharmacy Director', organization: 'HealthFirst Pharmacy Chain', content: 'The pharmacy management system is incredible. Real-time inventory tracking and automated drug interaction alerts have prevented countless medication errors.', rating: 5, avatar: 'MR' },
 ];
 

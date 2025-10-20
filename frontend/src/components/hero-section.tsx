@@ -84,7 +84,7 @@ export function HeroSection() {
           transition={{ duration: 1, delay: 0.2 }}
         >
           Comprehensive healthcare software solutions for hospitals, pharmacies, 
-          and laboratories. Built by MINDSPIRE to streamline operations with secure, scalable technology.
+          and laboratories. Built by HEALTHSPIRE to streamline operations with secure, scalable technology.
         </motion.p>
 
         <motion.div

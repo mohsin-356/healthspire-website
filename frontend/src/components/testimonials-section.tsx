@@ -18,7 +18,7 @@ export function TestimonialsSection() {
         >
           <h2 className="text-4xl mb-4 font-semibold">Trusted by Healthcare Leaders</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            See what healthcare professionals are saying about SPIREHEALTH
+            See what healthcare professionals are saying about HEALTHSPIRE
           </p>
         </motion.div>
 

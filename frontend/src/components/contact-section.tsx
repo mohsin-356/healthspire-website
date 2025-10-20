@@ -119,7 +119,7 @@ export function ContactSection() {
               transition={{ duration: 0.6, delay: 0.3 }}
               viewport={{ once: true }}
             >
-              <h4 className="font-semibold mb-4">Why Healthcare Leaders Choose SPIREHEALTH</h4>
+              <h4 className="font-semibold mb-4">Why Healthcare Leaders Choose HEALTHSPIRE</h4>
               <ul className="space-y-3">
                 {[
                   "Dedicated healthcare focus",

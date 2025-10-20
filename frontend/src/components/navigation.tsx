@@ -172,8 +172,8 @@ export function Navigation() {
               <span>+92 329 6273720</span>
             </div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-                Get Demo
+              <Button className="bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => navigate('/book')}>
+                Book Now
               </Button>
             </motion.div>
           </div>
@@ -235,8 +235,8 @@ export function Navigation() {
                 <Phone className="w-4 h-4" />
                 <span>+92 329 6273720</span>
               </div>
-              <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-                Get Demo
+              <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => navigate('/book')}>
+                Book Now
               </Button>
             </div>
           </nav>
