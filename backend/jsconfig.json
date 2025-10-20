@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "es2022",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "checkJs": false,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "baseUrl": "."
+  },
+  "typeAcquisition": {
+    "enable": true,
+    "include": ["node"]
+  },
+  "include": ["src/**/*.js"],
+  "exclude": ["node_modules", "uploads"]
+}

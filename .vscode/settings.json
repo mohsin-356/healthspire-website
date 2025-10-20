@@ -2,8 +2,15 @@
   "json.schemaDownload.enable": false,
   "json.validate.enable": true,
   "typescript.preferences.includePackageJsonAutoImports": "auto",
+  "typescript.tsserver.experimental.enableProjectDiagnostics": false,
+  "typescript.tsserver.watchOptions": {
+    "excludeDirectories": ["**/node_modules", "**/.git", "**/dist"]
+  },
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
+  },
+  "problems.exclude": {
+    "**/node_modules/**": true
   },
   "files.associations": {
     "*.json": "jsonc"
