@@ -14,7 +14,7 @@ interface AuthContextType {
 
 const AUTH_KEY = 'healthspire_auth_v1';
 const TOKEN_KEY = 'healthspire_token_v1';
-const API_BASE = (import.meta as any).env?.VITE_API_URL || 'http://localhost:4000/api';
+const API_BASE = 'https://healthspire-backend-git-main-mindspires-projects.vercel.app/api';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
