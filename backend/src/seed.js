@@ -25,7 +25,7 @@ import {
 
 async function run() {
   await connectMongo();
-  const email = process.env.SEED_ADMIN_EMAIL || 'mohsinsaeed356@gmail.com';
+  const email = process.env.SEED_ADMIN_EMAIL || 'qutaibahtalat313@gmail.com';
   const password = process.env.SEED_ADMIN_PASSWORD || 'mindspire32!@';
   let user = await User.findOne({ email });
   if (!user) {

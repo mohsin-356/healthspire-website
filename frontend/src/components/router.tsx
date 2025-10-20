@@ -72,7 +72,7 @@ export function Router() {
   }
   switch (currentPath) {
     case '/admin':
-      return (role === 'admin' || role === 'demo') ? <AdminDashboard /> : <LoginPage />;
+      return role === 'admin' ? <AdminDashboard /> : <LoginPage />;
     case '/blog':
       return <BlogPage />;
     case '/book':

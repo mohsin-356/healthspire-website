@@ -6,10 +6,8 @@ import { Eye, EyeOff } from 'lucide-react';
 
 export function LoginPage() {
   const { login, loginDemo } = useAuth();
-  const ADMIN_EMAIL = 'mohsinsaeed356@gmail.com';
-  const ADMIN_PASSWORD = 'mindspire32!@';
-  const [email, setEmail] = useState(ADMIN_EMAIL);
-  const [password, setPassword] = useState(ADMIN_PASSWORD);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -19,8 +17,7 @@ export function LoginPage() {
     setError(null);
     setLoading(true);
     try {
-      // Force the configured admin credentials regardless of input
-      const ok = await login(ADMIN_EMAIL, ADMIN_PASSWORD);
+      const ok = await login(email, password);
       if (!ok) setError('Invalid email or password');
     } finally {
       setLoading(false);

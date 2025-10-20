@@ -13,13 +13,6 @@ export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body || {};
   if (!email || !password) return res.status(400).json({ error: 'Email and password are required' });
   let user = await User.findOne({ email: String(email).toLowerCase().trim() });
-  // Auto-provision admin on first login if matches default admin credentials
-  const DEFAULT_EMAIL = process.env.SEED_ADMIN_EMAIL || 'mohsinsaeed356@gmail.com';
-  const DEFAULT_PASSWORD = process.env.SEED_ADMIN_PASSWORD || 'mindspire32!@';
-  if (!user && email.toLowerCase().trim() === DEFAULT_EMAIL.toLowerCase().trim() && password === DEFAULT_PASSWORD) {
-    const passwordHash = await bcrypt.hash(DEFAULT_PASSWORD, 10);
-    user = await User.create({ email: DEFAULT_EMAIL.toLowerCase().trim(), passwordHash, role: 'admin' });
-  }
   if (!user) return res.status(401).json({ error: 'Invalid credentials' });
   const ok = await bcrypt.compare(password, user.passwordHash);
   if (!ok) return res.status(401).json({ error: 'Invalid credentials' });

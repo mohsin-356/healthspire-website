@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
-export type Role = 'guest' | 'demo' | 'admin';
+export type Role = 'guest' | 'demo' | 'user' | 'admin';
 
 interface AuthContextType {
   role: Role;
