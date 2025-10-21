@@ -5,8 +5,8 @@
   "type": "module",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "NODE_ENV=development node --watch src/index.js",
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
     "build": "echo 'No build step required for serverless'",
     "seed": "node src/seed.js",
     "vercel-build": "echo 'Vercel build complete'",
@@ -25,8 +25,7 @@
     "mongoose": "^8.4.1",
     "morgan": "^1.10.0",
     "multer": "^2.0.2",
-    "nodemon": "^3.1.10",
-    "serverless-http": "^3.2.0"
+    "nodemon": "^3.1.10"
   },
   "devDependencies": {
     "@types/node": "^24.8.1"
