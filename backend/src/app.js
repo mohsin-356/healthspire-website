@@ -21,25 +21,51 @@ const app = express();
 const defaultAllowed = [
   'https://healthspire.org',
   'http://localhost:5173',
-  'http://127.0.0.1:5173'
+  'http://127.0.0.1:5173',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000'
 ];
 const envAllowed = (process.env.CORS_ORIGIN || '')
   .split(',')
   .map((s) => s.trim())
   .filter(Boolean);
 const explicitAllowed = new Set([...defaultAllowed, ...envAllowed]);
+
+// Enhanced CORS for Vercel deployment
 const corsOptions = {
   origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, Postman, etc.)
     if (!origin) return callback(null, true);
+    
     try {
       if (explicitAllowed.has(origin)) return callback(null, true);
+      
       const u = new URL(origin);
-      if (u.hostname === 'localhost' || u.hostname === '127.0.0.1') return callback(null, true);
-    } catch {}
+      
+      // Allow localhost and 127.0.0.1 for development
+      if (u.hostname === 'localhost' || u.hostname === '127.0.0.1') {
+        return callback(null, true);
+      }
+      
+      // Allow Vercel preview deployments
+      if (u.hostname.endsWith('.vercel.app')) {
+        return callback(null, true);
+      }
+      
+      // Allow Netlify deployments
+      if (u.hostname.endsWith('.netlify.app')) {
+        return callback(null, true);
+      }
+      
+    } catch (error) {
+      console.error('CORS origin parsing error:', error);
+    }
+    
     return callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   optionsSuccessStatus: 204
 };
 app.use(cors(corsOptions));
