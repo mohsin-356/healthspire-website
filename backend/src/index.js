@@ -1,9 +1,19 @@
 import 'dotenv/config';
+import http from 'http';
 import app from './app.js';
 import { connectMongo } from './lib/db.js';
 
-// Ensure DB connection is established on cold start (Vercel) and reused
-await connectMongo();
+const PORT = process.env.PORT || 4000;
 
-// Export Express app for Vercel (@vercel/node will handle requests)
-export default app;
+async function start() {
+  await connectMongo();
+  const server = http.createServer(app);
+  server.listen(PORT, () => {
+    console.log(`Healthspire API listening on http://localhost:${PORT}`);
+  });
+}
+
+start().catch((err) => {
+  console.error('Fatal startup error:', err);
+  process.exit(1);
+});

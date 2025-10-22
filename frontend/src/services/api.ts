@@ -1,6 +1,5 @@
 // API Configuration and Base Service
-const env: any = (import.meta as any)?.env || {};
-const API_BASE_URL = env.VITE_API_URL || env.VITE_API_BASE_URL || 'https://healthspire-backend.vercel.app/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
 
 // Types for API responses
 export interface ApiResponse<T = any> {
