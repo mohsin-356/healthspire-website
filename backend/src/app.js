@@ -53,8 +53,10 @@ const corsOptionsDelegate = (req, callback) => {
 };
 app.use(cors(corsOptionsDelegate));
 app.options('*', cors(corsOptionsDelegate));
+console.log('CORS: any origin allowed');
 app.use(express.json({ limit: '10mb' }));
-app.use(morgan('dev'));
+app.set('trust proxy', true);
+app.use(morgan(':remote-addr - :method :url :status :res[content-length] - :response-time ms'));
 
 // Avoid conditional GET/304 interfering with fetch() by disabling etag and forcing no-store
 app.set('etag', false);

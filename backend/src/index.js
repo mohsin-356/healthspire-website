@@ -4,12 +4,13 @@ import app from './app.js';
 import { connectMongo } from './lib/db.js';
 
 const PORT = process.env.PORT || 4000;
+const HOST = process.env.HOST || '0.0.0.0';
 
 async function start() {
   await connectMongo();
   const server = http.createServer(app);
-  server.listen(PORT, () => {
-    console.log(`Healthspire API listening on http://localhost:${PORT}`);
+  server.listen(PORT, HOST, () => {
+    console.log(`Healthspire API listening on http://${HOST}:${PORT}`);
   });
 }
 

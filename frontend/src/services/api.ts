@@ -1,5 +1,5 @@
 // API Configuration and Base Service
-const API_BASE_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:4000/api';
+const API_BASE_URL = (import.meta as any).env?.VITE_API_URL || 'http://80.225.227.119:4000/api';
 
 // Types for API responses
 export interface ApiResponse<T = any> {
