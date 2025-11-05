@@ -43,8 +43,16 @@ const corsOptions = {
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
   optionsSuccessStatus: 204
 };
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+const corsOptionsDelegate = (req, callback) => {
+  let corsOptions;
+  corsOptions = { origin: true };
+  corsOptions.credentials = true;
+  corsOptions.methods = ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'];
+  corsOptions.optionsSuccessStatus = 204;
+  callback(null, corsOptions); // callback expects two parameters: error and options
+};
+app.use(cors(corsOptionsDelegate));
+app.options('*', cors(corsOptionsDelegate));
 app.use(express.json({ limit: '10mb' }));
 app.use(morgan('dev'));
 
