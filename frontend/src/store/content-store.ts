@@ -9,7 +9,7 @@ import {
   Users, Globe, Award, Target, TrendingUp as TrendingUpIcon, Heart,
 } from 'lucide-react';
 
-const API_BASE = (import.meta as any).env?.VITE_API_URL || 'http://80.225.227.119:4000/api';
+const API_BASE = (import.meta as any).env?.VITE_API_URL || 'http://localhost:4000/api';
 
 export type IconName =
   | 'Hospital' | 'Pill' | 'FlaskConical' | 'Shield' | 'BarChart3' | 'UserCheck'
