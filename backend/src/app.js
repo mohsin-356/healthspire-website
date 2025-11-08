@@ -48,13 +48,14 @@ const corsOptionsDelegate = (req, callback) => {
   corsOptions = { origin: true };
   corsOptions.credentials = true;
   corsOptions.methods = ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'];
+  corsOptions.allowedHeaders = ['Content-Type', 'Authorization'];
   corsOptions.optionsSuccessStatus = 204;
   callback(null, corsOptions); // callback expects two parameters: error and options
 };
 app.use(cors(corsOptionsDelegate));
 app.options('*', cors(corsOptionsDelegate));
 console.log('CORS: any origin allowed');
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: '15mb' }));
 app.set('trust proxy', true);
 app.use(morgan(':remote-addr - :method :url :status :res[content-length] - :response-time ms'));
 
