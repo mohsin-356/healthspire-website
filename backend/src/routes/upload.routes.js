@@ -28,7 +28,7 @@ const fileFilter = (req, file, cb) => {
   cb(new Error('Only image uploads are allowed'));
 };
 
-const upload = multer({ storage, fileFilter, limits: { fileSize: 15 * 1024 * 1024 } });
+const upload = multer({ storage, fileFilter, limits: { fileSize: 5 * 1024 * 1024 } });
 
 const router = Router();
 router.post('/', verifyToken, requireAdmin, upload.single('file'), respondWithFile);
