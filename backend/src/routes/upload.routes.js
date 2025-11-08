@@ -8,16 +8,20 @@ import { respondWithFile } from '../controllers/upload.controller.js';
 const uploadsDir = path.resolve(process.cwd(), 'uploads');
 try { fs.mkdirSync(uploadsDir, { recursive: true }); } catch {}
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadsDir);
-  },
-  filename: function (req, file, cb) {
-    const ext = path.extname(file.originalname);
-    const name = path.basename(file.originalname, ext).replace(/[^a-zA-Z0-9_-]/g, '_');
-    cb(null, `${Date.now()}_${name}${ext}`);
-  }
-});
+const useCloudinary = Boolean(process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET);
+
+const storage = useCloudinary
+  ? multer.memoryStorage()
+  : multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, uploadsDir);
+      },
+      filename: function (req, file, cb) {
+        const ext = path.extname(file.originalname);
+        const name = path.basename(file.originalname, ext).replace(/[^a-zA-Z0-9_-]/g, '_');
+        cb(null, `${Date.now()}_${name}${ext}`);
+      }
+    });
 
 const fileFilter = (req, file, cb) => {
   if ((file.mimetype || '').startsWith('image/')) return cb(null, true);
